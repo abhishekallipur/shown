@@ -2,7 +2,7 @@ import os
 from random import randint, choice
 
 # Number of commits you want
-total_commits = 60
+total_commits = 100
 
 # Track the number of commits made
 commit_count = 0
