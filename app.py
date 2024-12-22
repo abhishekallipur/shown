@@ -1,39 +1,46 @@
 import os
 from random import randint, choice
+import datetime
 
-# Number of commits you want
-total_commits =600
+# Total number of commits: generate a random number between 20 and 60
+total_commits = randint(20, 60)
 
 # Track the number of commits made
 commit_count = 0
 
-# List of days from 1 to 365
-days = list(range(1, 366))
+# Start from day 1 (January 2024)
+current_day = 1
 
-# Randomly select 60 days to commit on
-random_days = sorted([choice(days) for _ in range(total_commits)])
+# List to store commit days
+commit_days = []
 
-for i in random_days:
-    # Skip to next if we already reached 60 commits
-    if commit_count >= total_commits:
-        break
+# Commit until February 2024
+end_day = 31  # We are working with January and February 2024, so day 31 is the limit
+
+# Randomly select commit days (mimicking natural spacing)
+while commit_count < total_commits and current_day <= (31 + 31):  # Until February 2024
+    commit_days.append(current_day)
+
+    # Skip 2-3 days (randomly), ensuring it doesn't exceed the end day
+    current_day += randint(2, 3)
     
-    # Random number of commits for the selected day (between 1 and 10)
-    for j in range(randint(1, 10)):
-        # Create the commit message with the selected day
-        d = str(i) + " days ago"
-        
-        # Write to file.txt
-        with open('file.txt', 'a') as f:
-            f.write(d + '\n')
-        
-        # Commit and push the changes
-        os.system('git add .')
-        os.system('git commit --date="' + d + '" -m "commit"')
-        
+    if current_day <= (31 + 31):
         commit_count += 1
-        if commit_count >= total_commits:
-            break
+
+# Iterate through the selected commit days and simulate commits
+for i in commit_days:
+    # Commit on a random number of times for each day (between 1 and 3 commits)
+    for j in range(randint(1, 3)):
+        # Create a commit message with the selected day (e.g., "25 days ago")
+        commit_date = str(i) + " days ago"
+        
+        # Write to file.txt (simulating some change on each commit)
+        with open('file.txt', 'a') as f:
+            f.write(commit_date + '\n')
+        
+        # Commit with the generated commit date
+        os.system(f'git add .')
+        os.system(f'git commit --date="{commit_date}" -m "Normal commit on {commit_date}"')
 
 # Push to the remote repository
 os.system('git push -u origin main')
